@@ -1,10 +1,12 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import SplashScreen from "./src/splashScreen";
+import AppNavigator from "./src/navigator/AppNavigator";
 function App() {
   return (
     
-      <SplashScreen />
+      <SafeAreaProvider>
+      <AppNavigator />
+    </SafeAreaProvider>
   
   );
 }
