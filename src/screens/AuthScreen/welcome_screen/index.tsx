@@ -1,16 +1,18 @@
-import React from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
-import { Welcomescreenlogo } from "../AppConstant/Icons";
-import AppButton from "../Component/GlobalComponent/PrimaryButton";
+import { Welcomescreenlogo } from '../../../AppConstant/Icons';
+import AppButton from '../../../Component/GlobalComponent/PrimaryButton';
+import { AuthStackScreen } from '../../../navigator/navigation.type';
 
-function WelcomeScreen() {
-     const navigation = useNavigation<any>();
+interface WelcomeScreenProps extends AuthStackScreen<'WelcomeScreen'> {}
+
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
+      <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <StatusBar barStyle="dark-content" />
 
         <View style={styles.container}>
@@ -22,7 +24,7 @@ function WelcomeScreen() {
             <AppButton
               title="Sign In"
               onPress={() => {
-                navigation.replace("SignInScreen");
+                navigation.replace('SignInScreen');
               }}
               style={styles.button}
             />
@@ -33,7 +35,7 @@ function WelcomeScreen() {
               title="Sign Up"
               variant="outline"
               onPress={() => {
-                navigation.replace("SignUpScreen");
+                navigation.replace('SignUpScreen');
               }}
               style={styles.button}
             />
@@ -42,28 +44,28 @@ function WelcomeScreen() {
       </SafeAreaView>
     </SafeAreaProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   container: {
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   centerContent: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   footer: {
     paddingHorizontal: 20,
     paddingBottom: 24,
   },
   button: {
-    width: "100%",
+    width: '100%',
   },
 });
 
