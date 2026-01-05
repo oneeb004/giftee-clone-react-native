@@ -11,14 +11,12 @@ import {
 
 interface SplashScreenProps extends AuthStackScreen<'SplashScreen'> {}
 
-const SplashScreen: React.FC<SplashScreenProps> = ({}) => {
-  const navigation = useNavigation<any>();
+const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
   useEffect(() => {
-    navigation.replace('WelcomeScreen');
-    const timer = setTimeout(() => {}, 3000);
-
-    return () => clearTimeout(timer);
-  }, [navigation]);
+    setTimeout(() => {
+      navigation.navigate('WelcomeScreen');
+    }, 3000);
+  }, []);
 
   return (
     <SafeAreaProvider>

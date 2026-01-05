@@ -24,7 +24,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
             <AppButton
               title="Sign In"
               onPress={() => {
-                navigation.replace('SignInScreen');
+                navigation.navigate('SignInScreen');
               }}
               style={styles.button}
             />
@@ -35,7 +35,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
               title="Sign Up"
               variant="outline"
               onPress={() => {
-                navigation.replace('SignUpScreen');
+                navigation.navigate('SignUpScreen');
               }}
               style={styles.button}
             />

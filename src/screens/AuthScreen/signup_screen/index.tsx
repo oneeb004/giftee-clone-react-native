@@ -8,12 +8,12 @@ import CustomTextField from '../../../Component/GlobalComponent/CustomTextField'
 import { AuthStackScreen } from '../../../navigator/navigation.type';
 interface SignUpScreenProps extends AuthStackScreen<'SignUpScreen'> {}
 
-const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation, route }) => {
+const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safe}>
         <StatusBar barStyle="dark-content" />
-        <Pressable onPress={navigation.goBack}>
+        <Pressable onPress={() => navigation.goBack()}>
           <BackArrow />
         </Pressable>
 
