@@ -110,19 +110,6 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
             </View>
           )}
 
-          {/* <View style={styles.field}>
-            <CustomTextField
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Password"
-              LeftIcon={envelope}
-              inputProps={{
-                secureTextEntry: true,
-                autoCapitalize: "none",
-              }}
-            />
-          </View> */}
-
           <View style={styles.button}>
             <AppButton
               title="Sign In"
@@ -132,7 +119,11 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>
               Don't have an account?{' '}
-              <Text style={styles.signupLink}>Sign Up</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SignUpScreen')}
+              >
+                <Text style={styles.signupLink}>Sign Up</Text>
+              </TouchableOpacity>
             </Text>
           </View>
         </View>

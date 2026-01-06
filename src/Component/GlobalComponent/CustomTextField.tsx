@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   TextInput,
   View,
   TextInputProps,
   ViewStyle,
-} from "react-native";
+} from 'react-native';
 
 type CustomTextFieldProps = {
   value: string;
@@ -21,7 +21,7 @@ type CustomTextFieldProps = {
 export default function CustomTextField({
   value,
   onChangeText,
-  placeholder = "",
+  placeholder = '',
   LeftIcon,
   containerStyle,
   inputProps,
@@ -50,25 +50,25 @@ const styles = StyleSheet.create({
   container: {
     height: 54,
     borderRadius: 12,
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 14,
     shadowOpacity: 0.08,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    elevation: 1,
   },
   iconBox: {
     marginRight: 10,
     width: 22,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     flex: 1,
     fontSize: 15,
-    color: "#222",
-    paddingVertical: 0, 
+    color: '#222',
+    paddingVertical: 0,
   },
 });

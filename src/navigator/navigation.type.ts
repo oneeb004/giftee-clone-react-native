@@ -9,6 +9,7 @@ export type AuthStackParamList = {
   WelcomeScreen : undefined;
   SignInScreen: undefined;
   SignUpScreen: undefined;
+
  
 };
 
