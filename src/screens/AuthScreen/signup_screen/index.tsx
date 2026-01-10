@@ -21,6 +21,7 @@ import StepOne from './components/signup_step1';
 import StepTwo from './components/signup_step2';
 import StepThree from './components/signup_step3';
 import PhoneConfirmBottomSheet from '../otp_verfication_screen/phone_confrim_bottom_sheet';
+import OtpVerificationScreen from '../otp_verfication_screen/otp_verification_Screen';
 
 interface SignUpScreenProps extends AuthStackScreen<'SignUpScreen'> {}
 
@@ -63,14 +64,32 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
 
   const closeSheet = () => {
     const s = sheetRef.current as any;
-    if (!s) return;
+    if (!s) {
+      console.log('No ref available');
+      return;
+    }
+
     console.log('Closing sheet with ref:', s);
-    if (typeof s.snapToIndex === 'function') return s.snapToIndex(-1);
-    if (typeof s.close === 'function') return s.close();
-    if (typeof s.collapse === 'function') return s.collapse();
+
+    if (typeof s.close === 'function') {
+      s.close();
+      return;
+    }
+
+    if (typeof s.snapToIndex === 'function') {
+      s.snapToIndex(-1);
+      return;
+    }
+
+    if (typeof s.collapse === 'function') {
+      s.collapse();
+      return;
+    }
   };
 
   const handleNext = () => {
+    Keyboard.dismiss();
+
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep(prev => prev + 1);
       return;
@@ -115,8 +134,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <BottomSheetModalProvider>
+    <BottomSheetModalProvider>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{ flex: 1 }}>
           <SafeAreaProvider style={styles.safe}>
             <StatusBar barStyle="dark-content" />
@@ -189,14 +208,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
             phoneText={phoneText}
             onConfirm={() => {
               closeSheet();
+              navigation.navigate('OtpVerificationScreen');
             }}
             onChange={() => {
               closeSheet();
             }}
           />
         </View>
-      </BottomSheetModalProvider>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </BottomSheetModalProvider>
   );
 };
 

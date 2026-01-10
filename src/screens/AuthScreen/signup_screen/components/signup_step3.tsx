@@ -10,7 +10,9 @@ import { phoneLogo } from '../../../../AppConstant/Icons';
 
 type StepThreeProps = {
   phoneRaw: string;
+  email: string;
   setPhoneRaw: (val: string) => void;
+  setEmail: (val: string) => void;
 
   countryCode: CountryCode;
   setCountryCode: (val: CountryCode) => void;
@@ -24,6 +26,8 @@ type StepThreeProps = {
 
 const StepThree: React.FC<StepThreeProps> = ({
   phoneRaw,
+  email,
+  setEmail,
   setPhoneRaw,
   countryCode,
   setCountryCode,
@@ -96,6 +100,18 @@ const StepThree: React.FC<StepThreeProps> = ({
           />
         </View>
       </View>
+      <View style={styles.emailText}>
+        <Text>Enter your Email Address</Text>
+      </View>
+
+      <View style={styles.emailContainer}>
+        <CustomTextField
+          placeholder="Enter Your Email"
+          value={email}
+          onChangeText={(text: string) => setEmail(text)}
+          inputProps={{ keyboardType: 'email-address', autoCapitalize: 'none' }}
+        />
+      </View>
 
       <View style={{ marginTop: 10 }}>
         {!phoneRaw ? (
@@ -166,6 +182,15 @@ const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
     justifyContent: 'center',
+  },
+  emailText: {
+    fontSize: 14,
+    marginTop: 20,
+  },
+  emailContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 50,
   },
 
   helperText: {
