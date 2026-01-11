@@ -19,6 +19,7 @@ import CustomTextField from '../../../Component/GlobalComponent/CustomTextField'
 import AppButton from '../../../Component/GlobalComponent/PrimaryButton';
 import { useNavigation } from '@react-navigation/native';
 import { AuthStackScreen } from '../../../navigator/navigation.type';
+import {styles} from '../sigin_screen/index_style'
 
 type LoginMode = 'phone' | 'email';
 
@@ -133,62 +134,3 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
 };
 
 export default SignInScreen;
-
-const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  backArrow: {
-    marginTop: 16,
-    marginLeft: 16,
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginTop: 24,
-    marginBottom: 16,
-  },
-  container: {
-    paddingHorizontal: 20,
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 24,
-  },
-  topButton: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 24,
-  },
-  topBtn: {
-    flex: 1,
-  },
-  field: {
-    marginTop: 16,
-  },
-  button: {
-    marginTop: 24,
-  },
-  signupContainer: {
-    marginTop: 'auto',
-    marginBottom: 32,
-    alignItems: 'center',
-  },
-
-  signupText: {
-    fontSize: 14,
-    color: '#666',
-  },
-
-  signupLink: {
-    color: '#FF2D55',
-    fontWeight: '600',
-  },
-});

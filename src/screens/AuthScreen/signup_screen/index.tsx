@@ -3,9 +3,7 @@ import {
   Keyboard,
   Pressable,
   StatusBar,
-  StyleSheet,
   Text,
-  TouchableNativeFeedback,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -21,7 +19,8 @@ import StepOne from './components/signup_step1';
 import StepTwo from './components/signup_step2';
 import StepThree from './components/signup_step3';
 import PhoneConfirmBottomSheet from '../otp_verfication_screen/phone_confrim_bottom_sheet';
-import OtpVerificationScreen from '../otp_verfication_screen/otp_verification_Screen';
+import { styles } from './index_style';
+
 
 interface SignUpScreenProps extends AuthStackScreen<'SignUpScreen'> {}
 
@@ -191,7 +190,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
                   setIsPhoneValid={setIsPhoneValid}
                   setE164={setPhoneE164} email={''} setEmail={function (val: string): void {
                  
-                  } }                />
+                  } } />
               )}
             </View>
 
@@ -222,67 +221,3 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
 };
 
 export default SignUpScreen;
-
-const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 16,
-  },
-
-  backArrow: {
-    marginTop: 12,
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-  },
-
-  logoContainer: {
-    alignItems: 'center',
-    marginTop: 6,
-    marginBottom: 12,
-  },
-
-  mainHeadingText: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#111111',
-    marginTop: 8,
-  },
-
-  headTextContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-
-  headingText: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: '#444444',
-  },
-
-  stepText: {
-    fontSize: 12,
-    color: '#B0B0B0',
-  },
-
-  progressTrack: {
-    height: 6,
-    borderRadius: 999,
-    backgroundColor: '#E9E9E9',
-    marginTop: 10,
-    overflow: 'hidden',
-  },
-
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#FF2D55',
-    borderRadius: 999,
-  },
-
-  bottomButton: {
-    marginTop: 24,
-  },
-});

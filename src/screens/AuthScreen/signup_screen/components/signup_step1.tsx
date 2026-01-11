@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import CustomTextField from '../../../../Component/GlobalComponent/CustomTextField';
 import { FullName, User } from '../../../../AppConstant/Icons';
+import {styles} from "../components/signup_step1_style"
 
 type StepOneProps = {
   fullName: string;
@@ -43,9 +44,4 @@ const StepOne: React.FC<StepOneProps> = ({
 
 export default StepOne;
 
-const styles = StyleSheet.create({
-  fieldWrapper: {
-    marginBottom: 12,
-    borderRadius: 12,
-  },
-});
+

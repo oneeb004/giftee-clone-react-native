@@ -35,7 +35,6 @@ const PhoneConfirmBottomSheet = forwardRef<BottomSheet, Props>(
         handleIndicatorStyle={{ backgroundColor: '#FF2D55', width: 40 }}
       >
         <View style={styles.sheetContent}>
-          {/* Top Content */}
           <View style={styles.topContent}>
             <Image style={styles.sheetIcon} source={picture} />
             <Text style={styles.sheetTitle}>

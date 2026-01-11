@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Welcomescreenlogo } from '../../../AppConstant/Icons';
+import {styles} from '../otp_verfication_screen/otp_verification_style';
 
 type Props = {
   navigation: any;
@@ -208,123 +208,3 @@ const OtpVerificationScreen: React.FC<Props> = ({ navigation }) => {
 };
 
 export default OtpVerificationScreen;
-
-const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-
-  topBar: {
-    height: 44,
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  backBtn: {
-    width: 36,
-    height: 36,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  backIcon: {
-    fontSize: 28,
-    color: '#111',
-    marginTop: -2,
-  },
-
-  logoWrap: {
-    marginTop: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  heading: {
-    marginTop: 28,
-    paddingHorizontal: 24,
-    textAlign: 'center',
-    fontSize: 16,
-    lineHeight: 22,
-    color: '#111',
-    fontWeight: '400',
-  },
-
-  otpRow: {
-    marginTop: 22,
-    paddingHorizontal: 18,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  otpBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#E9E9E9',
-    backgroundColor: '#fff',
-    fontSize: 18,
-    color: '#111',
-    fontWeight: '600',
-  },
-  otpBoxFilled: {
-    borderColor: '#FF2D55',
-    backgroundColor: '#FFF5F7',
-  },
-  otpBoxError: {
-    borderColor: '#FF2D55',
-    backgroundColor: '#FDE7EA',
-  },
-
-  timerRow: {
-    marginTop: 18,
-    alignItems: 'center',
-    minHeight: 20,
-  },
-  timerText: {
-    fontSize: 13,
-    color: '#666',
-  },
-  timerRed: {
-    color: '#FF2D55',
-    fontWeight: '500',
-  },
-
-  errorContainer: {
-    marginTop: 18,
-    marginHorizontal: 24,
-    minHeight: 20,
-  },
-  errorText: {
-    color: '#FF2D55',
-    textAlign: 'center',
-    fontSize: 13,
-    fontWeight: '500',
-  },
-
-  verifyBtn: {
-    marginTop: 18,
-    marginHorizontal: 24,
-    height: 52,
-    borderRadius: 14,
-    backgroundColor: '#FF2D55',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  verifyBtnDisabled: {
-    opacity: 0.6,
-  },
-  verifyText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-
-  resendBtn: {
-    marginTop: 12,
-    alignItems: 'center',
-  },
-  resendText: {
-    color: '#FF2D55',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-});

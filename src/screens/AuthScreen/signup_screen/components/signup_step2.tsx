@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import CustomTextField from '../../../../Component/GlobalComponent/CustomTextField';
 import { DownArrow, Location } from '../../../../AppConstant/Icons';
+import{styles} from '../components/singup_step2_styles'
 
 const cities = [
   'Karachi',
@@ -158,76 +159,3 @@ const StepTwo: React.FC<StepTwoProps> = ({ selectedCity, setSelectedCity }) => {
 };
 
 export default StepTwo;
-
-const styles = StyleSheet.create({
-  label: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 8,
-    color: '#444444',
-  },
-
-  dropdownWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    borderRadius: 12,
-    backgroundColor: 'white',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-  },
-  leftContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-
-  selectedText: {
-    fontSize: 14,
-    flexShrink: 1,
-  },
-
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  modalContent: {
-    width: '90%',
-    maxHeight: 500,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 8,
-  },
-
-  searchInput: {
-    height: 44,
-    marginHorizontal: 12,
-    marginBottom: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    backgroundColor: '#F2F2F2',
-    fontSize: 14,
-    color: '#111',
-  },
-
-  itemWrapper: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-
-  itemText: {
-    fontSize: 14,
-    color: '#111',
-  },
-
-  emptyText: {
-    textAlign: 'center',
-    paddingVertical: 20,
-    color: 'white',
-    fontSize: 14,
-  },
-});
