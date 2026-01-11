@@ -189,8 +189,9 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
                   callingCode={callingCode}
                   setCallingCode={setCallingCode}
                   setIsPhoneValid={setIsPhoneValid}
-                  setE164={setPhoneE164}
-                />
+                  setE164={setPhoneE164} email={''} setEmail={function (val: string): void {
+                 
+                  } }                />
               )}
             </View>
 
