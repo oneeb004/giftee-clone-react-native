@@ -18,9 +18,10 @@ type AppButtonProps = {
   loading?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  color?: string; 
 };
 
-const PRIMARY = "#FF2D55";
+const DEFAULT_COLOR = "#FF2D55";
 
 export default function AppButton({
   title,
@@ -30,6 +31,7 @@ export default function AppButton({
   loading = false,
   style,
   textStyle,
+  color = DEFAULT_COLOR,
 }: AppButtonProps) {
   const isDisabled = disabled || loading;
 
@@ -38,19 +40,25 @@ export default function AppButton({
       onPress={isDisabled ? undefined : onPress}
       style={({ pressed }) => [
         styles.base,
-        variant === "filled" ? styles.filled : styles.outline,
+        variant === "filled"
+          ? { backgroundColor: color }
+          : {
+              backgroundColor: "white",
+              borderWidth: 1.5,
+              borderColor: color,
+            },
         isDisabled && styles.disabled,
         pressed && !isDisabled && styles.pressed,
         style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={variant === "filled" ? "white" : color} />
       ) : (
         <Text
           style={[
             styles.text,
-            variant === "filled" ? styles.textFilled : styles.textOutline,
+            { color: variant === "filled" ? "white" : color },
             textStyle,
           ]}
         >
@@ -67,25 +75,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
-  },
-  filled: {
-    backgroundColor: PRIMARY,
-  },
-  outline: {
-    backgroundColor: "white",
-    borderWidth: 1.5,
-    borderColor: PRIMARY,
   },
   text: {
     fontSize: 16,
     fontWeight: "600",
-  },
-  textFilled: {
-    color: "white",
-  },
-  textOutline: {
-    color: PRIMARY,
   },
   pressed: {
     opacity: 0.85,
