@@ -118,7 +118,6 @@ const OtpVerificationScreen: React.FC<Props> = ({ navigation, route }) => {
 
       const res = await api.post<VerifyOtpResponse>(endpoint, body);
 
-      if()
 
       if (res.failed || !res.success) {
         setError(res.error || 'Invalid or expired OTP');

@@ -6,13 +6,8 @@ import { styles } from '../components/singup_step2_styles';
 
 import { useListingApi } from '../../../../hooks/useListingApi';
 import { apiEndpoints } from '../../../../utils/endpoints';
-type City = {
-  CityID: number;
-  CityName: string;
-  CityNameEn: string | null;
-  CityNameAr: string | null;
-  Status: number;
-};
+import { City } from '../../../../types/auth_type';
+
 
 type StepTwoProps = {
   values: { selectedCity: string };
@@ -41,6 +36,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
         return { data: cities, totalCount: cities.length };
       },
       idExtractor: (c: City) => c.CityID,
+      
     }),
     [],
   );
