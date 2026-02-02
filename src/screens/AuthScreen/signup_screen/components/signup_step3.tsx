@@ -37,6 +37,7 @@ const StepThree: React.FC<StepThreeProps> = ({
 }) => {
   const [pickerVisible, setPickerVisible] = useState(false);
   const [hasSelectedCountry, setHasSelectedCountry] = useState(false);
+
   const phoneObj = useMemo(() => {
     const full = `+${callingCode}${phoneRaw.replace(/\D/g, '')}`;
     return parsePhoneNumberFromString(full);
@@ -53,10 +54,12 @@ const StepThree: React.FC<StepThreeProps> = ({
     }
   }, [phoneObj]);
 
+  const e164Number = phoneObj?.number ?? '';
+
   useEffect(() => {
     setIsPhoneValid?.(isValid);
-    setE164?.(phoneObj?.number ?? '');
-  }, [isValid, phoneObj, setIsPhoneValid, setE164]);
+    setE164?.(e164Number);
+  }, [isValid, e164Number]);
 
   const onSelectCountry = (c: Country) => {
     setCountryCode(c.cca2);
@@ -99,7 +102,7 @@ const StepThree: React.FC<StepThreeProps> = ({
           />
         </View>
       </View>
-      <View >
+      <View>
         <Text>Enter your Email Address</Text>
       </View>
 
@@ -133,48 +136,48 @@ export default StepThree;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: width * 0.05,       
+    fontSize: width * 0.05,
     fontWeight: '600',
     color: '#111111',
-    marginBottom: height * 0.008,  
+    marginBottom: height * 0.008,
   },
 
   subTitle: {
-    fontSize: width * 0.032,      
+    fontSize: width * 0.032,
     color: '#444444',
-    marginBottom: height * 0.015,  
+    marginBottom: height * 0.015,
   },
 
   phoneCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderRadius: width * 0.03,    
+    borderRadius: width * 0.03,
     paddingHorizontal: width * 0.03,
-    height: height * 0.065,        
+    height: height * 0.065,
   },
 
   countryButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: width * 0.02,            
-    paddingRight: width * 0.025,  
+    gap: width * 0.02,
+    paddingRight: width * 0.025,
   },
 
   callingCodeText: {
-    fontSize: width * 0.035,      
+    fontSize: width * 0.035,
     fontWeight: '500',
   },
 
   chevron: {
-    fontSize: width * 0.035,       
+    fontSize: width * 0.035,
     color: '#999',
-    marginLeft: width * 0.005,    
+    marginLeft: width * 0.005,
   },
 
   divider: {
     width: 1,
-    height: height * 0.03,         
+    height: height * 0.03,
     backgroundColor: '#E2E2E2',
     marginHorizontal: width * 0.025,
   },
@@ -185,27 +188,25 @@ const styles = StyleSheet.create({
   },
 
   emailTextWrap: {
-    marginTop: height * 0.025,    
+    marginTop: height * 0.025,
   },
 
   emailLabel: {
-    fontSize: width * 0.035,       
+    fontSize: width * 0.035,
     color: '#111',
   },
 
-
-
   emailContainer: {
     justifyContent: 'center',
-    marginTop: height * 0.02,     
+    marginTop: height * 0.02,
   },
 
   helperWrap: {
-    marginTop: height * 0.012,     
+    marginTop: height * 0.012,
   },
 
   helperText: {
-    fontSize: width * 0.03,       
+    fontSize: width * 0.03,
     color: '#888',
   },
 
