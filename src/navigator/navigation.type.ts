@@ -9,7 +9,11 @@ export type AuthStackParamList = {
   WelcomeScreen : undefined;
   SignInScreen: undefined;
   SignUpScreen: undefined;
-  OtpVerificationScreen:undefined
+  OtpVerificationScreen :{
+    email : String;
+    phoneNo: String;
+    flow: 'signup' | 'signin';
+  }
 
  
 };

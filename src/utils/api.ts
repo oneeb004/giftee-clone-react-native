@@ -1,118 +1,123 @@
+import axios, { AxiosRequestConfig } from 'axios';
+import { apiEndpoints } from './endpoints';
 
-import axios, {
-  AxiosInstance,
-  InternalAxiosRequestConfig,
-} from "axios";
+const axiosInter = axios.create({
+  baseURL: apiEndpoints.BASE_URL,
+  responseType: 'json',
+  headers: { 'Content-Type': 'application/json' },
+});
 
-
-
- const VERSION = "v1";
- const BASE_URL = "https://giftee-api-dev.hostinger.bitscollision.net" ;
-
-export const END_POINTS = {
-  VERIFY_USERNAME: `/${VERSION}/Home/VerifyUserName`,
-  GET_CITY_LISTING: `/${VERSION}/Home/GetCityListing`,
-  REGISTER_AND_SEND_OTP: `/${VERSION}/Home/RegisterUserAndSendOTP`,
-  SIGN_IN: `/${VERSION}/Home/SignIn`, 
-  VERIFY_OTP: `/${VERSION}/Home/VerifyOTP`,
-  VERIFY_OTP_SIGNIN: `/${VERSION}/Home/VerifyOTP-SignIn`,
-};
-
-
-
- const HEADER_KEYS = {
-  LangID: "LangID",
-  UserId: "UserId",
-  ContentType: "Content-Type",
-};
-
- const DEFAULT_HEADERS = {
-  [HEADER_KEYS.ContentType]: "application/json",
-} ;
-
-
-
-export interface ResponseObject<T> {
+interface ResponseObject<T> {
   success: boolean;
   failed: boolean;
   data: T | null;
   error: string;
+  ResponseCode: number;
 }
 
+const caller = async <T>(
+  area: 'public' | 'private',
+  type: 'post' | 'get' | 'put' | 'delete',
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfig<any>,
+) => {
+  const responseObject: ResponseObject<T> = {
+    success: false,
+    failed: false,
+    data: null,
+    error: '',
+    ResponseCode: 0,
+  };
 
+  config = {
+    ...config,
+    headers: {
+      ...config?.headers,
+    },
+  };
 
-let langId = 1;
-let userId: number | null = null;
-
-export const Session = {
-  setLangId: (id: number) => {
-    langId = id;
-  },
-  getLangId: () => langId,
-
-  setUserId: (id: number | null) => {
-    userId = id;
-  },
-  getUserId: () => userId,
-};
-
-
-
- const httpClient: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: DEFAULT_HEADERS,
-  timeout: 20000,
-});
-
-httpClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    config.headers = config.headers ?? {};
-    config.headers[HEADER_KEYS.LangID] = Session.getLangId();
-    const uid = Session.getUserId();
-    if (uid !== null && uid !== undefined) {
-      config.headers[HEADER_KEYS.UserId] = uid;
+  try {
+    let response;
+    if (type === 'get' || type === 'delete') {
+      response = await axiosInter[type](url, config);
+    } else {
+      response = await axiosInter[type](url, data, config);
     }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+    responseObject.success = true;
+    responseObject.failed = false;
+    responseObject.data = response.data;
+    responseObject.error = '';
+    responseObject.ResponseCode = response.status;
+  } catch (err: any) {
+    const response = err?.response?.data;
+    let errorMessage =
+      response?.error?.message ||
+      response?.message ||
+      response?.ResponseMessage ||
+      err?.message ||
+      'Something went wrong';
 
+    responseObject.ResponseCode = err?.response?.status || 0;
 
+    if (
+      err?.response?.status === 500 ||
+      err?.response?.status === 503 ||
+      err?.response?.status === 0
+    ) {
+      errorMessage = 'Network Error, Please try again later.';
+    }
 
-export const ApiService = {
-  get: async <T>(url: string, params?: any): Promise<ResponseObject<T>> => {
-    const res = await httpClient.get<ResponseObject<T>>(url, { params });
-    return res.data;
-  },
+    responseObject.error = errorMessage;
+    responseObject.data = response?.data || null;
+    responseObject.failed = true;
+    responseObject.success = false;
+  }
 
-  post: async <T>(url: string, body?: any): Promise<ResponseObject<T>> => {
-    const res = await httpClient.post<ResponseObject<T>>(url, body);
-    return res.data;
-  },
+  if (true) {
+    console.log('\n\n');
+    console.log('Api Call --> ', `[${type?.toUpperCase()}]`, url);
+    if (data) {
+      console.log('\tdata ->', data);
+    }
+    if (config) {
+      console.log('\tconfig ->', config);
+    }
+    console.log('\tresponse ->', responseObject);
+    console.log('\n');
+  }
 
-  put: async <T>(url: string, body?: any): Promise<ResponseObject<T>> => {
-    const res = await httpClient.put<ResponseObject<T>>(url, body);
-    return res.data;
-  },
-
-  delete: async <T>(url: string): Promise<ResponseObject<T>> => {
-    const res = await httpClient.delete<ResponseObject<T>>(url);
-    return res.data;
-  },
+  return responseObject as ResponseObject<T>;
 };
 
+const api = {
+  get: async <T>(url: string, config?: AxiosRequestConfig<any>) =>
+    caller<T>('public', 'get', url, undefined, config),
+  delete: async <T>(url: string, config?: AxiosRequestConfig<any>) =>
+    caller<T>('public', 'delete', url, undefined, config),
+  post: async <T>(url: string, data: any, config?: AxiosRequestConfig<any>) =>
+    caller<T>('public', 'post', url, data, config),
+  put: async <T>(url: string, data?: any, config?: AxiosRequestConfig<any>) =>
+    caller<T>('public', 'put', url, data, config),
+};
 
+export default api;
 
-export const getApiErrorMessage = (err: unknown): string => {
-  if (axios.isAxiosError(err)) {
-    const data = err.response?.data as Partial<ResponseObject<any>> | undefined;
-    return (
-      data?.error ||
-      err.message ||
-      "Request failed. Please try again."
-    );
-  }
-  if (err instanceof Error) return err.message;
-  return "Something went wrong.";
+export const getAuthHeader = (token: string) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  };
+};
+
+export const getAuthHeaderWithFormData = (token: string) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
 };

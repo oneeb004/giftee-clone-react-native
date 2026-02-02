@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { ApiService } from '../utils/api';
-import notify, {getQueryFromObject, useDebouncedSearch } from '../utils/index.ts'
+import notify, {
+  getQueryFromObject,
+  useDebouncedSearch,
+} from '../utils/index.ts';
+import api from '../utils/api.ts';
 
 export const useListingApi = <T>(
   url: string,
@@ -59,10 +62,10 @@ export const useListingApi = <T>(
 
     let apiUrl = `${url}?pageIndex=${currentPage}&pageSize=${pageSize}`;
 
-    const searchValue = searchParam || search;
-    if (searchValue) {
-      apiUrl += `&searchTerm=${encodeURIComponent(searchValue)}`;
-    }
+    // const searchValue = searchParam || search;
+    // if (searchValue) {
+    //   apiUrl += `&searchTerm=${encodeURIComponent(searchValue)}`;
+    // }
 
     if (sortColumn && sortDirection) {
       apiUrl += `&sortColumn=${sortColumn}&sortDirection=${sortDirection}`;
@@ -72,7 +75,7 @@ export const useListingApi = <T>(
       apiUrl += '&' + getQueryFromObject(extraParams);
     }
 
-    ApiService
+    api
       .get<any>(apiUrl)
       .then(res => {
         if (res.failed) {
@@ -136,14 +139,14 @@ export const useListingApi = <T>(
     }, []),
   );
 
-  const { search, setSearch } = useDebouncedSearch(searchValue => {
-    if (!isInitialLoad) return;
-    pageIndexRef.current = 1;
-    setPageIndex(1);
-    setData([]);
-    setHasMore(true);
-    fetchData(searchValue, true, 1);
-  });
+  // const { search, setSearch } = useDebouncedSearch(searchValue => {
+  //   if (!isInitialLoad) return;
+  //   pageIndexRef.current = 1;
+  //   setPageIndex(1);
+  //   setData([]);
+  //   setHasMore(true);
+  //   fetchData(searchValue, true, 1);
+  // });
 
   useEffect(() => {
     pageIndexRef.current = pageIndex;
@@ -224,7 +227,7 @@ export const useListingApi = <T>(
     loading,
     loadingMore,
     hasMore,
-    search,
+    // search,
     pageSize,
     totalCount,
     extraParams,
@@ -232,7 +235,7 @@ export const useListingApi = <T>(
     sortDirection,
 
     setPageIndex,
-    setSearch,
+    // setSearch,
     setPageSize,
     setExtraParams,
     setSortColumn,
@@ -245,4 +248,3 @@ export const useListingApi = <T>(
     remove,
   };
 };
-

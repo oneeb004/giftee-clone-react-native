@@ -1,93 +1,88 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Modal,
-  TextInput,
-} from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, Modal } from 'react-native';
 import CustomTextField from '../../../../Component/GlobalComponent/CustomTextField';
 import { DownArrow, Location } from '../../../../AppConstant/Icons';
-import{styles} from '../components/singup_step2_styles'
+import { styles } from '../components/singup_step2_styles';
 
-const cities = [
-  'Karachi',
-  'Lahore',
-  'Faisalabad',
-  'Rawalpindi',
-  'Islamabad',
-  'Multan',
-  'Gujranwala',
-  'Hyderabad',
-  'Peshawar',
-  'Quetta',
-  'Sialkot',
-  'Bahawalpur',
-  'Sargodha',
-  'Sukkur',
-  'Larkana',
-  'Sheikhupura',
-  'Rahim Yar Khan',
-  'Jhang',
-  'Dera Ghazi Khan',
-  'Gujrat',
-  'Kasur',
-  'Mardan',
-  'Mingora',
-  'Nawabshah',
-  'Okara',
-  'Mirpur Khas',
-  'Chiniot',
-  'Kamoke',
-  'Burewala',
-  'Jacobabad',
-  'Sadiqabad',
-  'Khanewal',
-  'Hafizabad',
-  'Kohat',
-  'Muzaffargarh',
-  'Khanpur',
-  'Gojra',
-  'Bahawalnagar',
-  'Muridke',
-  'Pakpattan',
-  'Abbottabad',
-  'Tando Adam',
-  'Jaranwala',
-  'Vihari',
-  'Jhelum',
-  'Attock',
-  'Swabi',
-  'Nowshera',
-  'Khuzdar',
-];
-
-type StepTwoProps = {
-  selectedCity: string;
-  setSelectedCity: (v: string) => void;
+import { useListingApi } from '../../../../hooks/useListingApi';
+import { apiEndpoints } from '../../../../utils/endpoints';
+type City = {
+  CityID: number;
+  CityName: string;
+  CityNameEn: string | null;
+  CityNameAr: string | null;
+  Status: number;
 };
 
-const StepTwo: React.FC<StepTwoProps> = ({ selectedCity, setSelectedCity }) => {
+type StepTwoProps = {
+  values: { selectedCity: string };
+  errors: { selectedCity?: string };
+  touched: { selectedCity?: boolean };
+  setFieldValue: (field: 'selectedCity', value: string) => void;
+  setFieldTouched: (field: 'selectedCity', touched?: boolean) => void;
+};
+
+const StepTwo: React.FC<StepTwoProps> = ({
+  values,
+  errors,
+  touched,
+  setFieldValue,
+  setFieldTouched,
+}) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
 
-  const filteredCities = cities.filter(city =>
-    city.toLowerCase().includes(search.toLowerCase()),
+  const listingConfig = useMemo(
+    () => ({
+      pageIndex: 1,
+      pageSize: 9999,
+      transformData: (data: any) => {
+        const cities: City[] = data?.Data?.cities ?? [];
+        return { data: cities, totalCount: cities.length };
+      },
+      idExtractor: (c: City) => c.CityID,
+    }),
+    [],
   );
 
-  const handleSelect = (city: string) => {
-    setSelectedCity(city);
+  const { data: cities = [], loading } = useListingApi<City>(
+    apiEndpoints.GET_CITY_LISTING,
+    null,
+    listingConfig,
+  );
+
+  const filteredCities = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return cities;
+    return cities.filter(c => (c.CityName || '').toLowerCase().includes(q));
+  }, [cities, search]);
+
+  const selectedCityLabel = useMemo(() => {
+    const id = values.selectedCity;
+    const found = cities.find(c => String(c.CityID) === String(id));
+    return found?.CityName ?? '';
+  }, [values.selectedCity, cities]);
+
+  const handleSelect = (city: City) => {
+    setFieldValue('selectedCity', String(city.CityID));
+    setFieldTouched('selectedCity', true);
     setSearch('');
     setOpen(false);
   };
 
+  const showError = Boolean(touched.selectedCity && errors.selectedCity);
+
   return (
     <View style={{ marginTop: 18 }}>
       <TouchableOpacity
-        style={styles.dropdownWrapper}
-        onPress={() => setOpen(true)}
+        style={[
+          styles.dropdownWrapper,
+          showError ? { borderColor: '#FF3B30', borderWidth: 1 } : null,
+        ]}
+        onPress={() => {
+          setOpen(true);
+          setFieldTouched('selectedCity', true);
+        }}
       >
         <View style={styles.leftContent}>
           <Location />
@@ -95,15 +90,28 @@ const StepTwo: React.FC<StepTwoProps> = ({ selectedCity, setSelectedCity }) => {
             numberOfLines={1}
             style={[
               styles.selectedText,
-              selectedCity ? { color: '#111' } : { color: '#A0A0A0' },
+              selectedCityLabel ? { color: '#111' } : { color: '#A0A0A0' },
             ]}
           >
-            {selectedCity || 'City'}
+            {selectedCityLabel || (loading ? 'Loading...' : 'City')}
           </Text>
         </View>
 
         <DownArrow />
       </TouchableOpacity>
+
+      {showError ? (
+        <Text
+          style={{
+            marginTop: 6,
+            marginLeft: 6,
+            fontSize: 12,
+            color: '#FF3B30',
+          }}
+        >
+          {errors.selectedCity}
+        </Text>
+      ) : null}
 
       <Modal transparent visible={open} animationType="fade">
         <TouchableOpacity
@@ -115,39 +123,31 @@ const StepTwo: React.FC<StepTwoProps> = ({ selectedCity, setSelectedCity }) => {
           }}
         >
           <View style={styles.modalContent}>
-            <View style={styles.modalContent}>
-              <CustomTextField
-                placeholder="City"
-                value={search}
-                onChangeText={setSearch}
-                inputProps={{
-                  autoCapitalize: 'words',
-                  keyboardType: 'default',
-                }}
-              />
-            </View>
-
-            {/* <TextInput
-              placeholder="City"
+            <CustomTextField
+              placeholder={loading ? 'Loading cities...' : 'Search city'}
               value={search}
               onChangeText={setSearch}
-              style={styles.searchInput}
-              placeholderTextColor="#999"
-            /> */}
+              inputProps={{
+                autoCapitalize: 'words',
+                keyboardType: 'default',
+              }}
+            />
 
             <FlatList
               data={filteredCities}
-              keyExtractor={item => item}
+              keyExtractor={item => String(item.CityID)}
               keyboardShouldPersistTaps="handled"
               ListEmptyComponent={
-                <Text style={styles.emptyText}>No city found</Text>
+                <Text style={styles.emptyText}>
+                  {loading ? 'Loading...' : 'No city found'}
+                </Text>
               }
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.itemWrapper}
                   onPress={() => handleSelect(item)}
                 >
-                  <Text style={styles.itemText}>{item}</Text>
+                  <Text style={styles.itemText}>{item.CityName}</Text>
                 </TouchableOpacity>
               )}
             />
